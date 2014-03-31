@@ -21,11 +21,16 @@ public class MainActivity extends BaseActivity {
 
     private ArrayAdapter<String> adapter;
     private ListView listView = null;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        mDialog = new ProgressDialog(this);
+        mDialog.setMessage("Please wait...");
+        mDialog.setCancelable(false);
+        mDialog.show();
 
         soundPlayer.loadSounds(this);
 
@@ -44,6 +49,9 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void run() {
                         MainActivity.this.listView.setAdapter(MainActivity.this.adapter);
+                        if(mDialog.isShowing()) {
+                            mDialog.hide();
+                        }
                     }
                 });
             }
@@ -62,9 +70,5 @@ public class MainActivity extends BaseActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
-//        ProgressDialog mDialog = new ProgressDialog(this);
-//        mDialog.setMessage("Please wait...");
-//        mDialog.setCancelable(true);
-//        mDialog.show();
     }
 }
