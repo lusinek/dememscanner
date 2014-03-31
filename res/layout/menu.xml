@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/toolbar_find"
+        android:showAsAction="ifRoom"
+        android:title="@+id/search"/>
+
+    <item
+        android:id="@+id/bar_scan_item"
+        android:icon="@drawable/barcode"
+        android:showAsAction="ifRoom"
+        android:title="@string/bar_code_button"/>
+
+    <item
+        android:id="@+id/share_item"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/share"
+        android:title="share"/>
+
+    <item
+        android:id="@+id/qr_scan_item"
+        android:icon="@drawable/qr_code"
+        android:showAsAction="ifRoom"
+        android:title="@string/qr_code_button"/>
+
+    <item
+        android:id="@+id/help_item"
+        android:title="@string/help"
+        android:showAsAction="never"/>
+
+</menu>

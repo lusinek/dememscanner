@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">Dem Em Scanner</string>
+    <string name="bar_code_button">Scan Barcode</string>
+    <string name="qr_code_button">Scan QR Code</string>
+    <string name="search">Search</string>
+    <string name="help">Help</string>
+    <string name="search_hint">Search products..</string>
+    <string name="ok">OK</string>
+
+</resources>
