@@ -61,9 +61,9 @@ public class JsonParser {
         });
     }
 
-    public void update()
+    public boolean update()
     {
-        jsonManager.update();
+        return jsonManager.update();
     }
 
     public static JsonParser getInstance()

@@ -15,7 +15,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -42,13 +45,24 @@ public class JsonManager {
         this._context = context;
     }
 
-    public void update()
+    public boolean update()
     {
         ConnectionDetector cd = new ConnectionDetector(this._context);
-        readJsonFromFile();
+        String json = readJsonFromFile();
         if(cd.isConnectingToInternet()) {
             updateJson();
+            return true;
+        } else if(json.length() == 0) {
+//        	AlertDialog alertDialog = new AlertDialog.Builder(_context).create();;
+//        	alertDialog.setTitle("Please Connect the Internet and Restart the Application");
+//        	alertDialog.setButton("OK", new AlertDialog.OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//				}
+//			});
+//        	alertDialog.show();
         }
+        return json.length() == 0 ? false : true;
     }
 
     private void writeJsonToFile(String json)

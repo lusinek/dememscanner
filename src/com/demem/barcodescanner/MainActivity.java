@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         mDialog = new ProgressDialog(this);
-        mDialog.setMessage("Please wait...");
+        mDialog.setMessage("Downloading data ...");
         mDialog.setCancelable(false);
         mDialog.show();
 
@@ -56,7 +56,25 @@ public class MainActivity extends BaseActivity {
                 });
             }
         });
-        jsonParser.update();
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while(!jsonParser.update()){
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            mDialog.setMessage("Downloading data ... \nConnect the internet");
+                        }
+                    });
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
