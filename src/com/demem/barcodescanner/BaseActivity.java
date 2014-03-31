@@ -40,13 +40,13 @@ public class BaseActivity extends Activity {
             startActivityForResult(intent, 0);
             return true;
         }
-        case R.id.qr_scan_item:
+        /*case R.id.qr_scan_item:
         {
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
             intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
             startActivityForResult(intent, 0);
             return true;
-        }
+        }*/
         case R.id.action_search:
         {
         	Intent intent = new Intent(this, SearchActivity.class);

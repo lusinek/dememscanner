@@ -19,11 +19,11 @@
         android:icon="@drawable/share"
         android:title="share"/>
 
-    <item
+    <!-- <item
         android:id="@+id/qr_scan_item"
         android:icon="@drawable/qr_code"
         android:showAsAction="ifRoom"
-        android:title="@string/qr_code_button"/>
+        android:title="@string/qr_code_button"/> -->
 
     <item
         android:id="@+id/help_item"

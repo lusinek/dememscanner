@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.demem.barcodescanner.R;
 
 import android.os.Bundle;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -58,8 +59,12 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(MainActivity.this, CategoryPageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(CATEGORY_NAME_FLAG, (String)listView.getItemAtPosition(arg2));
-                getApplicationContext().startActivity(intent);
+                MainActivity.this.startActivity(intent);
             }
         });
+//        ProgressDialog mDialog = new ProgressDialog(this);
+//        mDialog.setMessage("Please wait...");
+//        mDialog.setCancelable(true);
+//        mDialog.show();
     }
 }
