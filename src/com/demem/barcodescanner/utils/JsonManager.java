@@ -1,4 +1,4 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,9 +24,11 @@ import android.util.Log;
 
 public class JsonManager {
 
-    private final String jsonFileName = "myJsonFile.json";
+	// default values
+    private String jsonFileName;
+    private String jsonUrl;
     //private final String jsonUrl = "http://askimlan.110mb.com/mydir/products.txt";
-    private final String jsonUrl = "http://hakob.info/auto/_products.json";
+
     private Context _context;
 
     public interface OnJsonManagerListener {
@@ -111,4 +113,20 @@ public class JsonManager {
         });
         nm.execute(jsonUrl);
     }
+
+	public void setFilename(String fileName) {
+		jsonFileName = fileName;
+	}
+
+	public void setUrl(String url) {
+		jsonUrl = url;
+	}
+
+	public String getFilename(String fileName) {
+		return jsonFileName;
+	}
+
+	public String getUrl(String url) {
+		return jsonUrl;
+	}
 }

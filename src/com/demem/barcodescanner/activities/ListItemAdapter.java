@@ -1,6 +1,11 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.activities;
 
 import java.util.Vector;
+
+import com.demem.barcodescanner.ItemConteiner;
+import com.demem.barcodescanner.R;
+import com.demem.barcodescanner.R.id;
+import com.demem.barcodescanner.R.layout;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;

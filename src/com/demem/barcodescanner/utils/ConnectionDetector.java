@@ -1,4 +1,4 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -8,12 +8,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.demem.barcodescanner.base.JsonParserBase;
+import com.demem.barcodescanner.utils.ImageManager;
+
 import android.content.Context;
 import android.util.Log;
 
-public class JsonParser {
+public class JsonItemListParser extends JsonParserBase {
 
-    public static final JsonParser instance = new JsonParser();
+    public static final JsonItemListParser instance = new JsonItemListParser();
 
     public final String CATEGORY_ARRAY_KEY = "categoryList";
     public final String CATEGORY_NAME_KEY = "categoryName";
@@ -23,56 +26,30 @@ public class JsonParser {
     public final String ITEM_IMAGE_HASH_KEY = "imageHash";
     public final String ITEM_IMAGE_URL_KEY = "imageUrl";
 
-    private Context _context;
-    private JsonManager jsonManager;
     private JSONArray jsonArray;
-    private boolean jsonSet = false;
 
-    public interface OnJsonParserListener {
-        public void onJSONSet();
-    }
-
-    OnJsonParserListener onJsonParserListener = null;
-
-    public void setOnJsonParserListener(OnJsonParserListener listener)
-    {
-        onJsonParserListener = listener;
-    }
-
-    public void init(Context context)
-    {
-        this._context = context;
-        jsonManager = new JsonManager(this._context);
-        jsonManager.setOnJsonManagerListener(new JsonManager.OnJsonManagerListener() {
-            @Override
-            public void onJsonDataRead(String json) {
-                try {
-                    JSONObject jsonObject = new JSONObject(json);
-                    jsonArray = jsonObject.getJSONArray(CATEGORY_ARRAY_KEY);
-                    jsonSet = true;
-                    chaecImages();
-                    if(onJsonParserListener != null) {
-                        onJsonParserListener.onJSONSet();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public boolean update()
-    {
-        return jsonManager.update();
-    }
-
-    public static JsonParser getInstance()
+    public static JsonItemListParser getInstance()
     {
         return instance;
     }
 
-    private JsonParser() {
+    private JsonItemListParser() {
     }
+
+    @Override
+    protected void jsonDataRead(String json) {
+    	try {
+            JSONObject jsonObject = new JSONObject(json);
+            jsonArray = jsonObject.getJSONArray(CATEGORY_ARRAY_KEY);
+            jsonSet = true;
+            checkImages();
+            if(onJsonParserListener != null) {
+                onJsonParserListener.onJSONSet();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+	}
 
     public boolean itemInList(String itemCode)
     {
@@ -157,7 +134,7 @@ public class JsonParser {
         return result;
     }
 
-    public void chaecImages()
+    public void checkImages()
     {
         final HashMap<String, String> imageInfoMap = new HashMap<String, String>();
         if(jsonSet) {

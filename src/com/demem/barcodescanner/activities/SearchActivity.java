@@ -1,8 +1,13 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.activities;
 
 import java.util.Vector;
 
+import com.demem.barcodescanner.ItemConteiner;
+import com.demem.barcodescanner.JsonItemListParser;
 import com.demem.barcodescanner.R;
+import com.demem.barcodescanner.R.id;
+import com.demem.barcodescanner.R.layout;
+import com.demem.barcodescanner.fragments.CategoryListFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,7 +27,7 @@ public class SearchActivity extends Activity {
     private TextView textView;
     private ListView listView;
     ListItemAdapter adapter;
-    private JsonParser jsonParser = JsonParser.getInstance();
+    private JsonItemListParser jsonItemListParser = JsonItemListParser.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class SearchActivity extends Activity {
         textView = (TextView)findViewById(R.id.inputSearch);
         listView = (ListView)findViewById(R.id.itemsListView);
 
-        adapter = new ListItemAdapter(this, jsonParser.getAllItems());
+        adapter = new ListItemAdapter(this, jsonItemListParser.getAllItems());
         listView.setAdapter(adapter);
 
         textView.addTextChangedListener(new TextWatcher() {
@@ -61,8 +66,8 @@ public class SearchActivity extends Activity {
 
                 Intent intent = new Intent(SearchActivity.this, ItemPageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(MainActivity.ITEM_NAME_FLAG, ((ItemConteiner)adapter.getItem(arg2)).getItemName());
-                intent.putExtra(MainActivity.ITEM_IMAGE_FLAG, ((ItemConteiner)adapter.getItem(arg2)).getImagePath());
+                intent.putExtra(CategoryListFragment.ITEM_NAME_FLAG, ((ItemConteiner)adapter.getItem(arg2)).getItemName());
+                intent.putExtra(CategoryListFragment.ITEM_IMAGE_FLAG, ((ItemConteiner)adapter.getItem(arg2)).getImagePath());
                 getApplicationContext().startActivity(intent);
             }
         });

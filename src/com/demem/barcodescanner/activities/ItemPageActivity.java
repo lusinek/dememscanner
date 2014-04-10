@@ -1,6 +1,9 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.activities;
 
 import com.demem.barcodescanner.R;
+import com.demem.barcodescanner.R.id;
+import com.demem.barcodescanner.R.layout;
+import com.demem.barcodescanner.fragments.CategoryListFragment;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
@@ -17,8 +20,8 @@ public class ItemPageActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.item_layout);
 		Bundle bundle = getIntent().getExtras();
-		itemName = bundle.getString(MainActivity.ITEM_NAME_FLAG);
-		itemImageUrl = bundle.getString(MainActivity.ITEM_IMAGE_FLAG);
+		itemName = bundle.getString(CategoryListFragment.ITEM_NAME_FLAG);
+		itemImageUrl = bundle.getString(CategoryListFragment.ITEM_IMAGE_FLAG);
 		ImageView itemImageView = (ImageView) findViewById(R.id.itemImageView);
 		itemImageView.setImageBitmap(BitmapFactory.decodeFile(itemImageUrl));
 		setTitle(itemName);

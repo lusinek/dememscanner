@@ -1,10 +1,18 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.base;
 
+import com.demem.barcodescanner.JsonItemListParser;
+import com.demem.barcodescanner.JsonShopListParser;
 import com.demem.barcodescanner.R;
+import com.demem.barcodescanner.SoundPlayer;
+import com.demem.barcodescanner.R.drawable;
+import com.demem.barcodescanner.R.id;
+import com.demem.barcodescanner.R.layout;
+import com.demem.barcodescanner.activities.SearchActivity;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,9 +23,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
-	protected JsonParser jsonParser = JsonParser.getInstance();
+	protected JsonItemListParser jsonItemListParser = JsonItemListParser.getInstance();
+	protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
 	protected SoundPlayer soundPlayer = SoundPlayer.getInstance();
 
 	@Override
@@ -73,12 +82,12 @@ public class BaseActivity extends Activity {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 //String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
-                boolean res = jsonParser.itemInList(contents);
+                boolean res = jsonItemListParser.itemInList(contents);
                 if(res) {
                 	//Toast.makeText(this, "Don't buy this", Toast.LENGTH_SHORT).show();
                 	soundPlayer.playSound(SoundPlayer.DECLINE, 1f);
 
-                	final Dialog dialog = new Dialog(this);
+                	final Dialog dialog = new Dialog(BaseActivity.this);
                 	dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
                 	dialog.setContentView(R.layout.dialog_layout);
                 	dialog.setTitle("Don't buy this");
@@ -96,7 +105,7 @@ public class BaseActivity extends Activity {
                 } else {
                 	//Toast.makeText(this, "You can buy this", Toast.LENGTH_SHORT).show();
                 	soundPlayer.playSound(SoundPlayer.ACCEPT, 1f);
-                	final Dialog dialog = new Dialog(this);
+                	final Dialog dialog = new Dialog(BaseActivity.this);
                 	dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
                 	dialog.setContentView(R.layout.dialog_layout);
                 	dialog.setTitle("You can buy this");

@@ -1,4 +1,4 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.utils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
