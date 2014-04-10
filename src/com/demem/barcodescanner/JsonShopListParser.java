@@ -17,7 +17,8 @@ public class JsonShopListParser extends JsonParserBase {
     public static final JsonShopListParser instance = new JsonShopListParser();
 
     public final String SHOP_ARRAY_KEY = "shopList";
-    public final String SHOP_NAME_KYE = "shopName";
+    public final String SHOP_NAME_KEY = "shopName";
+    public final String ADDRESS_LIST_KEY = "addressList";
 
     private JSONArray jsonArray;
 
@@ -50,7 +51,29 @@ public class JsonShopListParser extends JsonParserBase {
             for(int i = 0; i < jsonArray.length(); ++i) {
                 try {
                     JSONObject item = jsonArray.getJSONObject(i);
-                    result.add(item.getString(SHOP_NAME_KYE));
+                    result.add(item.getString(SHOP_NAME_KEY));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    public Vector<String> getShopAddresses(String shopName)
+    {
+        Vector<String> result = new Vector<String>();
+        if(jsonSet) {
+            for(int i = 0; i < jsonArray.length(); ++i) {
+                try {
+                    JSONObject object = jsonArray.getJSONObject(i);
+                    if(object.getString(SHOP_NAME_KEY).compareTo(shopName) == 0) {
+                        JSONArray itemsArray = object.getJSONArray(ADDRESS_LIST_KEY);
+                        for(int j = 0; j < itemsArray.length(); ++j) {
+                            result.add(itemsArray.getString(j));
+                        }
+                        return result;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

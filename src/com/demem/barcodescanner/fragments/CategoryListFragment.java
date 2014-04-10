@@ -52,7 +52,7 @@ public class CategoryListFragment extends BaseFragment {
         mDialog.setCancelable(false);
         mDialog.show();
 
-        listView = (ListView) v.findViewById(R.id.categoryListView);;
+        listView = (ListView) v.findViewById(R.id.sListView);;
 
         jsonItemListParser.setOnJsonItemListParserListener(new JsonItemListParser.OnJsonParserListener() {
 

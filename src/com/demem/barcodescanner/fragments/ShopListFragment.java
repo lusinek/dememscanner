@@ -44,7 +44,7 @@ public class ShopListFragment extends BaseFragment {
         mDialog.setCancelable(false);
         mDialog.show();
 
-        listView = (ListView) v.findViewById(R.id.categoryListView);
+        listView = (ListView) v.findViewById(R.id.sListView);
 
         jsonShopListParser.setOnJsonItemListParserListener(new JsonItemListParser.OnJsonParserListener() {
 
@@ -52,7 +52,7 @@ public class ShopListFragment extends BaseFragment {
             public void onJSONSet() {
                 ArrayList<String> list = jsonShopListParser.getShops();
                 adapter = new ArrayAdapter<String>(_context,
-                        android.R.layout.simple_list_item_1, list);;
+                        android.R.layout.simple_list_item_1, list);
                         ((Activity) _context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
