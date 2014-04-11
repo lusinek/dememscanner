@@ -2,6 +2,7 @@ package com.demem.barcodescanner.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -11,21 +12,34 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
+import com.demem.barcodescanner.ExtendedMapView;
 import com.demem.barcodescanner.R;
+import com.demem.barcodescanner.ExtendedMapView.OnDataPassedListener;
 import com.demem.barcodescanner.fragmentadapters.ShopScreenFragmentPageAdapter;
 import com.demem.barcodescanner.fragments.ShopListFragment;
+import com.demem.barcodescanner.fragments.ShopMapFragment;
 
 @SuppressLint("NewApi")
 public class ShopPageActivity extends FragmentActivity {
 
-	private static final String ADDRESSES_TAB = "Addresses";
-	private static final String MAP_TAB = "Map";
-
-    List<Fragment> fragList = new ArrayList<Fragment>();
+    private static final String ADDRESSES_TAB = "Addresses";
+    private static final String MAP_TAB = "Map";
 
     private ActionBar bar;
     private ViewPager viewpager;
+
+    public interface OnDataPassedListener {
+        public abstract void onDataPassed(Vector<String> items);
+    }
+
+    OnDataPassedListener onDataPassedListener = null;
+
+    public void setOnDataPassedListener(OnDataPassedListener listener)
+    {
+        onDataPassedListener = listener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +56,18 @@ public class ShopPageActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         final ShopScreenFragmentPageAdapter fragmentPagerAdapter = new ShopScreenFragmentPageAdapter(fm);
         fragmentPagerAdapter.setContext(ShopPageActivity.this);
+        fragmentPagerAdapter.setOnItemClickListener(new ShopScreenFragmentPageAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(String item) {
+                viewpager.setCurrentItem(1);
+                if(onDataPassedListener != null)
+                {
+                    Vector<String> data = new Vector<String>();
+                    data.add(item);
+                    onDataPassedListener.onDataPassed(data);
+                }
+            }
+        });
 
         ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -64,7 +90,7 @@ public class ShopPageActivity extends FragmentActivity {
 
             @Override
             public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-            	viewpager.setCurrentItem(tab.getPosition());
+                viewpager.setCurrentItem(tab.getPosition());
             }
 
             @Override

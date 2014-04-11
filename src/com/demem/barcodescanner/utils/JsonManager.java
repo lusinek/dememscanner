@@ -24,15 +24,15 @@ import android.util.Log;
 
 public class JsonManager {
 
-	// default values
-    private String jsonFileName;
-    private String jsonUrl;
-    //private final String jsonUrl = "http://askimlan.110mb.com/mydir/products.txt";
+    // default values
+    private String jsonFileName = null;
+    private String jsonUrl = null;
 
     private Context _context;
 
     public interface OnJsonManagerListener {
         public abstract void onJsonDataRead(String json);
+        public abstract void onJsonDownloaded(String json);
     }
 
     OnJsonManagerListener onJsonManagerListener = null;
@@ -50,19 +50,22 @@ public class JsonManager {
     public boolean update()
     {
         ConnectionDetector cd = new ConnectionDetector(this._context);
-        String json = readJsonFromFile();
+        String json = "";
+        if(jsonFileName != null) {
+            json = readJsonFromFile();
+        }
         if(cd.isConnectingToInternet()) {
             updateJson();
             return true;
         } else if(json.length() == 0) {
-//        	AlertDialog alertDialog = new AlertDialog.Builder(_context).create();;
-//        	alertDialog.setTitle("Please Connect the Internet and Restart the Application");
-//        	alertDialog.setButton("OK", new AlertDialog.OnClickListener() {
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//				}
-//			});
-//        	alertDialog.show();
+//            AlertDialog alertDialog = new AlertDialog.Builder(_context).create();;
+//            alertDialog.setTitle("Please Connect the Internet and Restart the Application");
+//            alertDialog.setButton("OK", new AlertDialog.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                }
+//            });
+//            alertDialog.show();
         }
         return json.length() == 0 ? false : true;
     }
@@ -107,26 +110,32 @@ public class JsonManager {
             @Override
             public void onFileDownloaded(String url, byte[] buffer) {
                 String data = new String(buffer);
-                writeJsonToFile(data);
-                readJsonFromFile();
+                Log.d("jsonmanager downloaded 1", "@@@@@@");
+                if(onJsonManagerListener != null) {
+                    onJsonManagerListener.onJsonDownloaded(data);
+                }
+                if(jsonFileName != null) {
+                    writeJsonToFile(data);
+                    readJsonFromFile();
+                }
             }
         });
         nm.execute(jsonUrl);
     }
 
-	public void setFilename(String fileName) {
-		jsonFileName = fileName;
-	}
+    public void setFilename(String fileName) {
+        jsonFileName = fileName;
+    }
 
-	public void setUrl(String url) {
-		jsonUrl = url;
-	}
+    public void setUrl(String url) {
+        jsonUrl = url;
+    }
 
-	public String getFilename(String fileName) {
-		return jsonFileName;
-	}
+    public String getFilename(String fileName) {
+        return jsonFileName;
+    }
 
-	public String getUrl(String url) {
-		return jsonUrl;
-	}
+    public String getUrl(String url) {
+        return jsonUrl;
+    }
 }

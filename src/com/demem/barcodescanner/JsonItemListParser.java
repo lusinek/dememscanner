@@ -165,4 +165,8 @@ public class JsonItemListParser extends JsonParserBase {
     {
         return _context.getFilesDir() + "/" + ImageManager.IMAGE_FOLDER_NAME + "/" + (new ImageManager(_context)).getFileNameFromUrl(url);
     }
+
+	@Override
+	protected void jsonDataDownloaded(String json) {
+	}
 }

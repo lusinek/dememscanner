@@ -81,4 +81,8 @@ public class JsonShopListParser extends JsonParserBase {
         }
         return result;
     }
+
+	@Override
+	protected void jsonDataDownloaded(String json) {
+	}
 }

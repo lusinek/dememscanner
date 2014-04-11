@@ -20,15 +20,13 @@ import android.support.v4.view.ViewPager;
 @SuppressLint("NewApi")
 public class MainScreenActivity extends BaseActivity {
 
-	private static final String CATEGORIES_TAB = "Item Categories";
-	private static final String SHOPS_TAB = "Shops";
+    private static final String CATEGORIES_TAB = "Item Categories";
+    private static final String SHOPS_TAB = "Shops";
 
-	private final String PRODUCTS_JSON_FILENAME = "products.json";
-	private final String PRODUCTS_JSON_URL = "http://hakob.info/auto/_products.json";
-	private final String SHOPS_JSON_FILENAME = "shops.json";
-	private final String SHOPS_JSON_URL = "http://hakob.info/auto/shops.json";
-
-    List<Fragment> fragList = new ArrayList<Fragment>();
+    private final String PRODUCTS_JSON_FILENAME = "products.json";
+    private final String PRODUCTS_JSON_URL = "http://hakob.info/auto/_products.json";
+    private final String SHOPS_JSON_FILENAME = "shops.json";
+    private final String SHOPS_JSON_URL = "http://hakob.info/auto/shops.json";
 
     private ActionBar bar;
     private ViewPager viewpager;
@@ -43,8 +41,8 @@ public class MainScreenActivity extends BaseActivity {
         bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        jsonItemListParser.init(MainScreenActivity.this, PRODUCTS_JSON_FILENAME, PRODUCTS_JSON_URL);
-        jsonShopListParser.init(MainScreenActivity.this, SHOPS_JSON_FILENAME, SHOPS_JSON_URL);
+        jsonItemListParser.init(MainScreenActivity.this, PRODUCTS_JSON_URL, PRODUCTS_JSON_FILENAME);
+        jsonShopListParser.init(MainScreenActivity.this, SHOPS_JSON_URL, SHOPS_JSON_FILENAME);
         soundPlayer.loadSounds(MainScreenActivity.this);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -52,11 +50,11 @@ public class MainScreenActivity extends BaseActivity {
         fragmentPagerAdapter.setContext(MainScreenActivity.this);
 
         ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-        	@Override
-        	public void onPageSelected(int position) {
-        		super.onPageSelected(position);
-        		bar.setSelectedNavigationItem(position);        		
-        	}        	
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                bar.setSelectedNavigationItem(position);
+            }
         };
 
         viewpager.setOnPageChangeListener(pageChangeListener);
@@ -66,18 +64,18 @@ public class MainScreenActivity extends BaseActivity {
 
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 
-        	@Override
-        	public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) {
-        	}
+            @Override
+            public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) {
+            }
 
-        	@Override
-        	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-        		viewpager.setCurrentItem(tab.getPosition());
-        	}
+            @Override
+            public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+                viewpager.setCurrentItem(tab.getPosition());
+            }
 
-        	@Override
-        	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-        	}
+            @Override
+            public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
+            }
         };
 
         Tab categoryTab = bar.newTab();

@@ -11,11 +11,11 @@ import android.content.Context;
 
 public abstract class JsonParserBase {
 
-    protected String fileName;
-    protected String fileUrl;
+    protected String fileName = null;
+    protected String fileUrl = null;
 
-    protected Context _context;
-    protected JsonManager jsonManager;
+    protected Context _context = null;
+    protected JsonManager jsonManager = null;
     protected boolean jsonSet = false;
 
     public interface OnJsonParserListener {
@@ -24,10 +24,15 @@ public abstract class JsonParserBase {
 
     protected OnJsonParserListener onJsonParserListener = null;
 
-    public void init(Context context, String fileName, String fileUrl)
+    public void init(Context context, String fileUrl)
     {
-    	this._context = context;
-    	this.fileName = fileName;
+        this.init(context, fileUrl, null);
+    }
+
+    public void init(Context context, String fileUrl, String fileName)
+    {
+        this._context = context;
+        this.fileName = fileName;
         this.fileUrl = fileUrl;
         jsonManager = new JsonManager(this._context);
         jsonManager.setFilename(fileName);
@@ -35,7 +40,12 @@ public abstract class JsonParserBase {
         jsonManager.setOnJsonManagerListener(new JsonManager.OnJsonManagerListener() {
             @Override
             public void onJsonDataRead(String json) {
-            	jsonDataRead(json);
+                jsonDataRead(json);
+            }
+
+            @Override
+            public void onJsonDownloaded(String json) {
+                jsonDataDownloaded(json);
             }
         });
     }
@@ -66,5 +76,6 @@ public abstract class JsonParserBase {
         this.fileUrl = fileUrl;
     }
 
-    protected abstract void jsonDataRead(String json); 
+    protected abstract void jsonDataRead(String json);
+    protected abstract void jsonDataDownloaded(String json);
 }

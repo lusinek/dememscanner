@@ -41,7 +41,6 @@ public class NetworkManager extends AsyncTask<String, Integer, Void> {
                 HttpResponse httpResponse = defaultClient.execute(httpGetRequest);
                 InputStream inputStream = httpResponse.getEntity().getContent();
                 ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();;
-
                 int bufferSize = 1024;
                 byte[] buffer = new byte[bufferSize];
 
