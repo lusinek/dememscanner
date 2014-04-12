@@ -35,27 +35,17 @@ public class JsonLocationParser extends JsonParserBase {
 
     @Override
     protected void jsonDataDownloaded(String json) {
-    	Log.d("json downloaded", "@@@@@@");
         try {
-        	Log.d("json downloaded 1", "@@@@@@");
             JSONObject jsonObject = new JSONObject(json);
-            Log.d("json downloaded 2", "@@@@@@");
             String status = jsonObject.getString(STATUS_KEY);
-            Log.d("json downloaded 3", "@@@@@@");
             if(status.compareTo("OK") == 0) {
-            	Log.d("json downloaded 4", "@@@@@@");
                 jsonArray = jsonObject.getJSONArray(RESULTS_KEY);
-                Log.d("json downloaded 5", "@@@@@@");
                 jsonSet = true;
-                Log.d("json downloaded 6", "@@@@@@");
                 if(onJsonParserListener != null) {
-                	Log.d("json downloaded 7", "@@@@@@");
                     onJsonParserListener.onJSONSet();
                 }
             }
-            Log.d("json downloaded 8", "@@@@@@");
         } catch (JSONException e) {
-        	Log.d("json downloaded 9", "@@@@@@");
             e.printStackTrace();
         }
     }

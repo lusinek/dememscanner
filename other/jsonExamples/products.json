@@ -1,0 +1,127 @@
+{
+  "categoryList": [
+    {
+      "categoryName": "Bakery goods",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Dairy",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Grocery",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Sweets",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Juice and Beverages",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Alcoholic Beverages",
+      "itemsList": [
+        {
+          "itemName": "Nemiroff",
+          "imageHash": "196DE29E6E74D0CC230F92497B9CFCF7",
+          "imageUrl": "http://hakob.info/auto/images/Nemiroff.png",
+          "itemBarCodes": [
+            "1234567890128"
+          ]
+        },
+        {
+          "itemName": "Absolut",
+          "imageHash": "4145CE35767260F6096581D0AEE57255",
+          "imageUrl": "http://hakob.info/auto/images/Absolut.png",
+          "itemBarCodes": [
+            "1234567890128"
+          ]
+        },
+        {
+          "itemName": "Zelyonaya Marka",
+          "imageHash": "12871B9A0FEB9FAEE674749E4A73D23F",
+          "imageUrl": "http://hakob.info/auto/images/zelyonaya_marka.png",
+          "itemBarCodes": [
+            "1234567890128"
+          ]
+        }
+      ]
+    },
+    {
+      "categoryName": "Tabacco Products",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Meat Products",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Poultry and Eggs",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Fish and Seafood",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Frozen Products",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Ready-Made Meals",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Canned Food",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Fresh vegetables and Fruits",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Baby Food",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Diabetic Products",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Everything for Animals",
+      "itemsList": []
+    },
+    {
+      "categoryName": "Other",
+      "itemsList": [
+        {
+          "itemName": "testing item 1",
+          "imageHash": "C0EC62534DDAF3249EF51F9CE41D20E7",
+          "imageUrl": "http://hakob.info/auto/images/default.jpg",
+          "itemBarCodes": [
+            "1234567890128",
+            "0123456789012"
+          ]
+        },
+        {
+          "itemName": "testing item 2",
+          "imageHash": "C0EC62534DDAF3249EF51F9CE41D20E7",
+          "imageUrl": "http://hakob.info/auto/images/default.jpg",
+          "itemBarCodes": [
+            "1234567890128"
+          ]
+        },
+        {
+          "itemName": "testing item 3",
+          "imageHash": "C0EC62534DDAF3249EF51F9CE41D20E7",
+          "imageUrl": "http://hakob.info/auto/images/default.jpg",
+          "itemBarCodes": [
+            "1234567890128"
+          ]
+        }
+      ]
+    }
+  ]
+}

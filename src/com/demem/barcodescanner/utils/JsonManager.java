@@ -110,7 +110,6 @@ public class JsonManager {
             @Override
             public void onFileDownloaded(String url, byte[] buffer) {
                 String data = new String(buffer);
-                Log.d("jsonmanager downloaded 1", "@@@@@@");
                 if(onJsonManagerListener != null) {
                     onJsonManagerListener.onJsonDownloaded(data);
                 }

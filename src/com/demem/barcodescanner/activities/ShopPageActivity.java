@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.demem.barcodescanner.ExtendedMapView;
+import com.demem.barcodescanner.JsonShopListParser;
 import com.demem.barcodescanner.R;
-import com.demem.barcodescanner.ExtendedMapView.OnDataPassedListener;
 import com.demem.barcodescanner.fragmentadapters.ShopScreenFragmentPageAdapter;
 import com.demem.barcodescanner.fragments.ShopListFragment;
 import com.demem.barcodescanner.fragments.ShopMapFragment;
@@ -90,7 +92,13 @@ public class ShopPageActivity extends FragmentActivity {
 
             @Override
             public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-                viewpager.setCurrentItem(tab.getPosition());
+                int position = tab.getPosition();
+                viewpager.setCurrentItem(position);
+                if(onDataPassedListener != null && position == 1)
+                {
+                    Vector<String> data = new Vector<String>(JsonShopListParser.getInstance().getShopAddresses((String)getTitle()));
+                    onDataPassedListener.onDataPassed(data);
+                }
             }
 
             @Override

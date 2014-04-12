@@ -1,0 +1,18 @@
+{
+  "shopList": [
+    {
+      "shopName": "shop1",
+      "addressList": [
+        "Yerevan, Baghramyan 1",
+        "Yerevan, Komitas 1"
+      ]
+    },
+    {
+      "shopName": "shop2",
+      "addressList": [
+        "Yerevan, Pushkin 12",
+        "Yerevan, Demerchyan 3"
+      ]
+    }
+  ]
+}

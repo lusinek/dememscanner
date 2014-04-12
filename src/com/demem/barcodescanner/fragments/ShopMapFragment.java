@@ -27,8 +27,6 @@ public class ShopMapFragment extends BaseFragment {
     private GoogleMap map;
     private final String GOOGLE_MAPS_API_URL = "http://maps.google.com/maps/api/geocode/json?address=";
     private final String GOOGLE_MAPS_API_DEFAULT_PARAMS = "&region=hy&sensor=false";
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,15 +42,17 @@ public class ShopMapFragment extends BaseFragment {
         ((ShopPageActivity) getActivity()).setOnDataPassedListener(new ShopPageActivity.OnDataPassedListener() {
             @Override
             public void onDataPassed(Vector<String> items) {
+                map.clear();
+                int zoom = items.size() > 1 ? 12 : 14;
                 for(int i = 0; i < items.size(); ++i) {
-                    createMarker(items.get(i));
+                    createMarker(items.get(i), i == 0 ? zoom : 0);
                 }
             }
         });
         return v;
     }
 
-    public void createMarker(String address)
+    public void createMarker(String address, final int zoom)
     {
         final JsonLocationParser jlp = new JsonLocationParser();
         jlp.setOnJsonItemListParserListener(new JsonParserBase.OnJsonParserListener() {
@@ -64,15 +64,16 @@ public class ShopMapFragment extends BaseFragment {
                 ((ShopPageActivity) getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(""));
-                        ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
-                        ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+                        ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)));
+                        if(zoom > 0) {
+                            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+                            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
+                        }
                     }
                 });
             }
         });
         String requestUrl = GOOGLE_MAPS_API_URL + address + GOOGLE_MAPS_API_DEFAULT_PARAMS;
-        requestUrl = requestUrl.replaceAll(" ", "%20");
         jlp.init(_context, requestUrl);
         jlp.update();
     }
