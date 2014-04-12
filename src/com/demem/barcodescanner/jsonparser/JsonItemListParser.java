@@ -1,4 +1,4 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.jsonparser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.demem.barcodescanner.ItemConteiner;
 import com.demem.barcodescanner.base.JsonParserBase;
 import com.demem.barcodescanner.utils.ImageManager;
 

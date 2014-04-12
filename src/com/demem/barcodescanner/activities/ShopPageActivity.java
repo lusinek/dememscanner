@@ -17,11 +17,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.demem.barcodescanner.JsonShopListParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.fragmentadapters.ShopScreenFragmentPageAdapter;
 import com.demem.barcodescanner.fragments.ShopListFragment;
 import com.demem.barcodescanner.fragments.ShopMapFragment;
+import com.demem.barcodescanner.jsonparser.JsonShopListParser;
 
 @SuppressLint("NewApi")
 public class ShopPageActivity extends FragmentActivity {

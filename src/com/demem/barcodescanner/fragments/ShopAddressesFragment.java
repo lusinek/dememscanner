@@ -10,10 +10,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.demem.barcodescanner.JsonShopListParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.activities.ShopPageActivity;
 import com.demem.barcodescanner.base.BaseFragment;
+import com.demem.barcodescanner.jsonparser.JsonShopListParser;
 import com.demem.barcodescanner.utils.JsonManager.OnJsonManagerListener;
 
 public class ShopAddressesFragment extends BaseFragment {

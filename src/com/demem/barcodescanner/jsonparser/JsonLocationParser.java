@@ -1,4 +1,4 @@
-package com.demem.barcodescanner;
+package com.demem.barcodescanner.jsonparser;
 
 import java.util.ArrayList;
 import java.util.HashMap;

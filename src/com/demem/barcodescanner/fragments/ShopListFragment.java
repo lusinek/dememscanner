@@ -2,11 +2,11 @@ package com.demem.barcodescanner.fragments;
 
 import java.util.ArrayList;
 
-import com.demem.barcodescanner.JsonItemListParser;
-import com.demem.barcodescanner.JsonShopListParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.activities.ShopPageActivity;
 import com.demem.barcodescanner.base.BaseFragment;
+import com.demem.barcodescanner.jsonparser.JsonItemListParser;
+import com.demem.barcodescanner.jsonparser.JsonShopListParser;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

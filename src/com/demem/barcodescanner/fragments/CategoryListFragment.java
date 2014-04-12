@@ -2,13 +2,13 @@ package com.demem.barcodescanner.fragments;
 
 import java.util.ArrayList;
 
-import com.demem.barcodescanner.JsonItemListParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.SoundPlayer;
 import com.demem.barcodescanner.R.id;
 import com.demem.barcodescanner.R.layout;
 import com.demem.barcodescanner.activities.CategoryPageActivity;
 import com.demem.barcodescanner.base.BaseFragment;
+import com.demem.barcodescanner.jsonparser.JsonItemListParser;
 
 import android.os.Bundle;
 import android.app.Activity;

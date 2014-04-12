@@ -1,13 +1,13 @@
 package com.demem.barcodescanner.base;
 
-import com.demem.barcodescanner.JsonItemListParser;
-import com.demem.barcodescanner.JsonShopListParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.SoundPlayer;
 import com.demem.barcodescanner.R.drawable;
 import com.demem.barcodescanner.R.id;
 import com.demem.barcodescanner.R.layout;
 import com.demem.barcodescanner.activities.SearchActivity;
+import com.demem.barcodescanner.jsonparser.JsonItemListParser;
+import com.demem.barcodescanner.jsonparser.JsonShopListParser;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -67,7 +67,7 @@ public class BaseActivity extends FragmentActivity {
         	Intent shareIntent = new Intent();
         	shareIntent.setAction(Intent.ACTION_SEND);
         	shareIntent.setType("text/plain");
-        	shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this cool app");
+        	shareIntent.putExtra(Intent.EXTRA_TEXT, "Join to us");
         	startActivity(Intent.createChooser(shareIntent, "Share with friends"));
         }
         default:

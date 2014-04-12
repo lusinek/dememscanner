@@ -1,12 +1,12 @@
 package com.demem.barcodescanner.activities;
 
 import com.demem.barcodescanner.ItemConteiner;
-import com.demem.barcodescanner.JsonItemListParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.R.id;
 import com.demem.barcodescanner.R.layout;
 import com.demem.barcodescanner.base.BaseActivity;
 import com.demem.barcodescanner.fragments.CategoryListFragment;
+import com.demem.barcodescanner.jsonparser.JsonItemListParser;
 
 import android.content.Intent;
 import android.os.Bundle;

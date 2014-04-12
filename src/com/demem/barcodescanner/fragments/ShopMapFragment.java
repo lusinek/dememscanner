@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.demem.barcodescanner.JsonLocationParser;
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.activities.ShopPageActivity;
 import com.demem.barcodescanner.base.BaseFragment;
 import com.demem.barcodescanner.base.JsonParserBase;
+import com.demem.barcodescanner.jsonparser.JsonLocationParser;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
