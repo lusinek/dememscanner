@@ -77,10 +77,5 @@
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
 
-        <activity
-            android:name="com.demem.barcodescanner.activities.ShopPageActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-
     </application>
 </manifest>

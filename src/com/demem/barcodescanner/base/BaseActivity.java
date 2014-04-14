@@ -25,9 +25,13 @@ import android.widget.ImageView;
 
 public class BaseActivity extends FragmentActivity {
 
+	public static final String TAB_INDEX_KEY = "TAB_INDEX";
+	public static final String SCAN_MODE_KEY = "SCAN_MODE";
+
     protected JsonItemListParser jsonItemListParser = JsonItemListParser.getInstance();
     protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
     protected SoundPlayer soundPlayer = SoundPlayer.getInstance();
+    protected int currentTabIndex = 0;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -45,7 +49,7 @@ public class BaseActivity extends FragmentActivity {
         case R.id.bar_scan_item:
         {
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-            intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            intent.putExtra(SCAN_MODE_KEY, "PRODUCT_MODE");
             startActivityForResult(intent, 0);
             return true;
         }
@@ -59,6 +63,7 @@ public class BaseActivity extends FragmentActivity {
         case R.id.action_search:
         {
             Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra(TAB_INDEX_KEY, currentTabIndex);
             startActivityForResult(intent, 0);
             return true;
         }
@@ -69,6 +74,7 @@ public class BaseActivity extends FragmentActivity {
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, "Join to us");
             startActivity(Intent.createChooser(shareIntent, "Share with friends"));
+            return true;
         }
         default:
             return super.onOptionsItemSelected(item);

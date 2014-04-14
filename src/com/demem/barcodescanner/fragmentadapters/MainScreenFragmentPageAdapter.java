@@ -2,7 +2,7 @@ package com.demem.barcodescanner.fragmentadapters;
 
 import com.demem.barcodescanner.base.BaseFragmentPageAdapter;
 import com.demem.barcodescanner.fragments.CategoryListFragment;
-import com.demem.barcodescanner.fragments.ShopListFragment;
+import com.demem.barcodescanner.fragments.ShopMapFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,11 +26,11 @@ public class MainScreenFragmentPageAdapter extends BaseFragmentPageAdapter {
 				categoryList.setArguments(data);
 				return categoryList;
 			case 1:
-				ShopListFragment shopList = new ShopListFragment();
-				shopList.setContext(_context);
-				data.putInt("current_page", arg0+1);
-				shopList.setArguments(data);
-				return shopList;
+				ShopMapFragment shopMap = new ShopMapFragment();
+                shopMap.setContext(_context);
+                data.putInt("current_page", arg0+1);
+                shopMap.setArguments(data);
+                return shopMap;
 		}
 		return null;
 	}

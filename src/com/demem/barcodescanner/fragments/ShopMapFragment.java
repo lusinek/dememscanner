@@ -1,19 +1,32 @@
 package com.demem.barcodescanner.fragments;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.demem.barcodescanner.R;
-import com.demem.barcodescanner.activities.ShopPageActivity;
+import com.demem.barcodescanner.ShopContainer;
+import com.demem.barcodescanner.activities.MainScreenActivity;
 import com.demem.barcodescanner.base.BaseFragment;
 import com.demem.barcodescanner.base.JsonParserBase;
+import com.demem.barcodescanner.jsonparser.JsonItemListParser;
 import com.demem.barcodescanner.jsonparser.JsonLocationParser;
+import com.demem.barcodescanner.jsonparser.JsonShopListParser;
+import com.demem.barcodescanner.utils.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,9 +37,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ShopMapFragment extends BaseFragment {
 
+    protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
+
     private GoogleMap map;
+
     private final String GOOGLE_MAPS_API_URL = "http://maps.google.com/maps/api/geocode/json?address=";
     private final String GOOGLE_MAPS_API_DEFAULT_PARAMS = "&region=hy&sensor=false";
+
+    private ProgressDialog mDialog;
+    private GPSTracker gps;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,20 +58,79 @@ public class ShopMapFragment extends BaseFragment {
 
         View v = inflater.inflate(R.layout.map_layout, null);
         map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        ((ShopPageActivity) getActivity()).setOnDataPassedListener(new ShopPageActivity.OnDataPassedListener() {
+
+        mDialog = new ProgressDialog(_context);
+        mDialog.setMessage("Downloading data ...");
+        mDialog.setCancelable(false);
+        mDialog.show();
+
+        jsonShopListParser.setOnJsonItemListParserListener(new JsonItemListParser.OnJsonParserListener() {
+
             @Override
-            public void onDataPassed(Vector<String> items) {
-                map.clear();
-                int zoom = items.size() > 1 ? 12 : 14;
-                for(int i = 0; i < items.size(); ++i) {
-                    createMarker(items.get(i), i == 0 ? zoom : 0);
+            public void onJSONSet() {
+                ((MainScreenActivity) getActivity()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mDialog.isShowing()) {
+                            mDialog.hide();
+                        }
+                    }
+                });
+            }
+        });
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!jsonShopListParser.update()){
+                    ((MainScreenActivity) getActivity()).runOnUiThread(new Runnable() {
+                        public void run() {
+                            mDialog.setMessage("Downloading data ... \nConnect the internet");
+                        }
+                    });
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+            }
+        });
+        thread.start();
+        ((MainScreenActivity) getActivity()).setOnTabChangedListener(new MainScreenActivity.OnTabChangedListener() {
+            @Override
+            public void onTabChanged(int currentTab) {
+                ((MainScreenActivity) getActivity()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addMarkers();
+                    }
+                });
             }
         });
         return v;
     }
 
-    public void createMarker(String address, final int zoom)
+    public void addMarkers()
+    {
+        map.clear();
+        gps = new GPSTracker((Activity) _context);
+        if(gps.canGetLocation()){
+            double lat = gps.getLatitude();
+            double lng = gps.getLongitude();
+            ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))).setTitle("Me");
+            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
+        } else {
+            gps.showSettingsAlert();
+        }
+        Vector<ShopContainer> shopList = jsonShopListParser.getShopAddresses();
+        for(int i = 0; i < shopList.size(); ++i) {
+            createMarker(shopList.get(i).getAddress(), shopList.get(i).getShopName(), 0);
+        }
+    }
+
+    public void createMarker(final String address, final String title, final int zoom)
     {
         final JsonLocationParser jlp = new JsonLocationParser();
         jlp.setOnJsonItemListParserListener(new JsonParserBase.OnJsonParserListener() {
@@ -61,10 +139,16 @@ public class ShopMapFragment extends BaseFragment {
                 String latLng = jlp.getLatLng();
                 final double lat = Double.parseDouble(latLng.substring(0, latLng.lastIndexOf(",")));
                 final double lng = Double.parseDouble(latLng.substring(latLng.lastIndexOf(",") + 1, latLng.length()));
-                ((ShopPageActivity) getActivity()).runOnUiThread(new Runnable() {
+                ((MainScreenActivity) getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng)));
+                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.dont_buy_it);
+                        bm = Bitmap.createScaledBitmap(bm, 100, 100, true);
+                        ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+                                .icon(BitmapDescriptorFactory.fromBitmap(bm))
+                                .anchor(0.5f, 0.5f)
+                                .title(title + " : " + address)
+                        );
                         if(zoom > 0) {
                             ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
                             ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);

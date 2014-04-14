@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.demem.barcodescanner.ShopContainer;
 import com.demem.barcodescanner.base.JsonParserBase;
 
 import android.content.Context;
@@ -31,8 +32,8 @@ public class JsonShopListParser extends JsonParserBase {
     }
 
     @Override
-	protected void jsonDataRead(String json) {
-    	try {
+    protected void jsonDataRead(String json) {
+        try {
             JSONObject jsonObject = new JSONObject(json);
             jsonArray = jsonObject.getJSONArray(SHOP_ARRAY_KEY);
             jsonSet = true;
@@ -42,7 +43,7 @@ public class JsonShopListParser extends JsonParserBase {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-	}
+    }
 
     public ArrayList<String> getShops()
     {
@@ -60,19 +61,24 @@ public class JsonShopListParser extends JsonParserBase {
         return result;
     }
 
-    public Vector<String> getShopAddresses(String shopName)
+    public Vector<ShopContainer> getShopAddresses()
     {
-        Vector<String> result = new Vector<String>();
+        return getShopAddresses("");
+    }
+
+    public Vector<ShopContainer> getShopAddresses(String shopName)
+    {
+        Vector<ShopContainer> result = new Vector<ShopContainer>();
         if(jsonSet) {
             for(int i = 0; i < jsonArray.length(); ++i) {
                 try {
                     JSONObject object = jsonArray.getJSONObject(i);
-                    if(object.getString(SHOP_NAME_KEY).compareTo(shopName) == 0) {
+                    String sName = object.getString(SHOP_NAME_KEY);
+                    if(sName.compareTo(shopName) == 0 || shopName.compareTo("") == 0) {
                         JSONArray itemsArray = object.getJSONArray(ADDRESS_LIST_KEY);
                         for(int j = 0; j < itemsArray.length(); ++j) {
-                            result.add(itemsArray.getString(j));
+                            result.add(new ShopContainer(sName, itemsArray.getString(j)));
                         }
-                        return result;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -82,7 +88,7 @@ public class JsonShopListParser extends JsonParserBase {
         return result;
     }
 
-	@Override
-	protected void jsonDataDownloaded(String json) {
-	}
+    @Override
+    protected void jsonDataDownloaded(String json) {
+    }
 }

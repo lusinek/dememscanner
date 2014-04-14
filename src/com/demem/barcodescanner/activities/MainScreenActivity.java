@@ -2,6 +2,7 @@ package com.demem.barcodescanner.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.R.id;
@@ -30,6 +31,17 @@ public class MainScreenActivity extends BaseActivity {
 
     private ActionBar bar;
     private ViewPager viewpager;
+
+    public interface OnTabChangedListener {
+        public abstract void onTabChanged(int currentTab);
+    }
+
+    OnTabChangedListener onTabChangedListener = null;
+
+    public void setOnTabChangedListener(OnTabChangedListener listener)
+    {
+        onTabChangedListener = listener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +82,12 @@ public class MainScreenActivity extends BaseActivity {
 
             @Override
             public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+                int position = tab.getPosition();
+                currentTabIndex = position;
                 viewpager.setCurrentItem(tab.getPosition());
+                if(onTabChangedListener != null) {
+                    onTabChangedListener.onTabChanged(position);
+                }
             }
 
             @Override
