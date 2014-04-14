@@ -25,11 +25,11 @@ import android.widget.ImageView;
 
 public class BaseActivity extends FragmentActivity {
 
-	protected JsonItemListParser jsonItemListParser = JsonItemListParser.getInstance();
-	protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
-	protected SoundPlayer soundPlayer = SoundPlayer.getInstance();
+    protected JsonItemListParser jsonItemListParser = JsonItemListParser.getInstance();
+    protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
+    protected SoundPlayer soundPlayer = SoundPlayer.getInstance();
 
-	@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
@@ -58,17 +58,17 @@ public class BaseActivity extends FragmentActivity {
         }*/
         case R.id.action_search:
         {
-        	Intent intent = new Intent(this, SearchActivity.class);
-        	startActivityForResult(intent, 0);
-        	return true;
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivityForResult(intent, 0);
+            return true;
         }
         case R.id.share_item:
         {
-        	Intent shareIntent = new Intent();
-        	shareIntent.setAction(Intent.ACTION_SEND);
-        	shareIntent.setType("text/plain");
-        	shareIntent.putExtra(Intent.EXTRA_TEXT, "Join to us");
-        	startActivity(Intent.createChooser(shareIntent, "Share with friends"));
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Join to us");
+            startActivity(Intent.createChooser(shareIntent, "Share with friends"));
         }
         default:
             return super.onOptionsItemSelected(item);
@@ -84,42 +84,42 @@ public class BaseActivity extends FragmentActivity {
 
                 boolean res = jsonItemListParser.itemInList(contents);
                 if(res) {
-                	//Toast.makeText(this, "Don't buy this", Toast.LENGTH_SHORT).show();
-                	soundPlayer.playSound(SoundPlayer.DECLINE, 1f);
+                    //Toast.makeText(this, "Don't buy this", Toast.LENGTH_SHORT).show();
+                    soundPlayer.playSound(SoundPlayer.DECLINE, 1f);
 
-                	final Dialog dialog = new Dialog(BaseActivity.this);
-                	dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-                	dialog.setContentView(R.layout.dialog_layout);
-                	dialog.setTitle("Don't buy this");
+                    final Dialog dialog = new Dialog(BaseActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
+                    dialog.setContentView(R.layout.dialog_layout);
+                    dialog.setTitle("Don't buy this");
 
-                	Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
-                	dialogButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-                	ImageView imageView = (ImageView) dialog.findViewById(R.id.arImageView);
-                	imageView.setImageResource(R.drawable.dont_buy_it);
-                	dialog.show();
+                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
+                    dialogButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    ImageView imageView = (ImageView) dialog.findViewById(R.id.arImageView);
+                    imageView.setImageResource(R.drawable.dont_buy_it);
+                    dialog.show();
                 } else {
-                	//Toast.makeText(this, "You can buy this", Toast.LENGTH_SHORT).show();
-                	soundPlayer.playSound(SoundPlayer.ACCEPT, 1f);
-                	final Dialog dialog = new Dialog(BaseActivity.this);
-                	dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
-                	dialog.setContentView(R.layout.dialog_layout);
-                	dialog.setTitle("You can buy this");
+                    //Toast.makeText(this, "You can buy this", Toast.LENGTH_SHORT).show();
+                    soundPlayer.playSound(SoundPlayer.ACCEPT, 1f);
+                    final Dialog dialog = new Dialog(BaseActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_LEFT_ICON);
+                    dialog.setContentView(R.layout.dialog_layout);
+                    dialog.setTitle("You can buy this");
 
-                	Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
-                	dialogButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-                	ImageView imageView = (ImageView) dialog.findViewById(R.id.arImageView);
-                	imageView.setImageResource(R.drawable.buy_it);
-                	dialog.show();
+                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButton);
+                    dialogButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    ImageView imageView = (ImageView) dialog.findViewById(R.id.arImageView);
+                    imageView.setImageResource(R.drawable.buy_it);
+                    dialog.show();
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 Log.i("App","Scan unsuccessful");
