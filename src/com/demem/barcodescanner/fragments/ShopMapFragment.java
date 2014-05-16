@@ -119,6 +119,7 @@ public class ShopMapFragment extends BaseFragment {
             double lat = gps.getLatitude();
             double lng = gps.getLongitude();
             ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))).setTitle("Me");
+
             ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
             ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
         } else {
@@ -158,6 +159,7 @@ public class ShopMapFragment extends BaseFragment {
             }
         });
         String requestUrl = GOOGLE_MAPS_API_URL + address + GOOGLE_MAPS_API_DEFAULT_PARAMS;
+        requestUrl = requestUrl.replaceAll(" ", "%20");
         jlp.init(_context, requestUrl);
         jlp.update();
     }
