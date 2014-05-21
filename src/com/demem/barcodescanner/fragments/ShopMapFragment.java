@@ -10,7 +10,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,24 +114,38 @@ public class ShopMapFragment extends BaseFragment {
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+    	// TODO Auto-generated method stub
+    	super.onDestroyView();
+    	
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment fragment = (fm.findFragmentById(R.id.map));
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.remove(fragment);
+        ft.commit();
+    }
+    
     public void addMarkers()
     {
-        map.clear();
-        gps = new GPSTracker((Activity) _context);
-        if(gps.canGetLocation()){
-            double lat = gps.getLatitude();
-            double lng = gps.getLongitude();
-            ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))).setTitle("Me");
-
-            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
-            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
-        } else {
-            gps.showSettingsAlert();
-        }
-        Vector<ShopContainer> shopList = jsonShopListParser.getShopAddresses();
-        for(int i = 0; i < shopList.size(); ++i) {
-            createMarker(shopList.get(i).getAddress(), shopList.get(i).getShopName(), 0);
-        }
+    	if(map != null) {
+    		map.clear();
+	        gps = new GPSTracker((Activity) _context);
+	        if(gps.canGetLocation()){
+	            double lat = gps.getLatitude();
+	            double lng = gps.getLongitude();
+	            ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))).setTitle("Me");
+	
+	            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+	            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
+	        } else {
+	            gps.showSettingsAlert();
+	        }
+	        Vector<ShopContainer> shopList = jsonShopListParser.getShopAddresses();
+	        for(int i = 0; i < shopList.size(); ++i) {
+	            createMarker(shopList.get(i).getAddress(), shopList.get(i).getShopName(), 0);
+	        }
+    	}
     }
 
     public void createMarker(final String address, final String title, final int zoom)
@@ -143,17 +160,19 @@ public class ShopMapFragment extends BaseFragment {
                 ((MainScreenActivity) getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.dont_buy_it);
-                        bm = Bitmap.createScaledBitmap(bm, 100, 100, true);
-                        ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
-                                .icon(BitmapDescriptorFactory.fromBitmap(bm))
-                                .anchor(0.5f, 0.5f)
-                                .title(title + " : " + address)
-                        );
-                        if(zoom > 0) {
-                            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
-                            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
-                        }
+                    	if(map != null) {
+	                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.dont_buy_it);
+	                        bm = Bitmap.createScaledBitmap(bm, 100, 100, true);
+	                        ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))
+	                                .icon(BitmapDescriptorFactory.fromBitmap(bm))
+	                                .anchor(0.5f, 0.5f)
+	                                .title(title + " : " + address)
+	                        );
+	                        if(zoom > 0) {
+	                            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+	                            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
+	                        }
+                    	}
                     }
                 });
             }

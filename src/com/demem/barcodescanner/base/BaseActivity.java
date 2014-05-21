@@ -7,6 +7,7 @@ import com.demem.barcodescanner.R.id;
 import com.demem.barcodescanner.R.layout;
 import com.demem.barcodescanner.activities.SearchActivity;
 import com.demem.barcodescanner.jsonparser.JsonItemListParser;
+import com.demem.barcodescanner.jsonparser.JsonNewsParser;
 import com.demem.barcodescanner.jsonparser.JsonShopListParser;
 
 import android.app.Activity;
@@ -30,6 +31,7 @@ public class BaseActivity extends FragmentActivity {
 
     protected JsonItemListParser jsonItemListParser = JsonItemListParser.getInstance();
     protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
+    protected JsonNewsParser jsonNewsParser = JsonNewsParser.getInstance();
     protected SoundPlayer soundPlayer = SoundPlayer.getInstance();
     protected int currentTabIndex = 0;
 
