@@ -1,25 +1,15 @@
 package com.demem.barcodescanner.fragments;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.demem.barcodescanner.R;
 import com.demem.barcodescanner.ShopContainer;
@@ -32,10 +22,10 @@ import com.demem.barcodescanner.jsonparser.JsonShopListParser;
 import com.demem.barcodescanner.utils.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ShopMapFragment extends BaseFragment {
@@ -43,6 +33,7 @@ public class ShopMapFragment extends BaseFragment {
     protected JsonShopListParser jsonShopListParser = JsonShopListParser.getInstance();
 
     private GoogleMap map;
+    private MapView mMapView;
 
     private final String GOOGLE_MAPS_API_URL = "http://maps.google.com/maps/api/geocode/json?address=";
     private final String GOOGLE_MAPS_API_DEFAULT_PARAMS = "&region=hy&sensor=false";
@@ -50,9 +41,14 @@ public class ShopMapFragment extends BaseFragment {
     private ProgressDialog mDialog;
     private GPSTracker gps;
 
+    public ShopMapFragment() {
+		// TODO Auto-generated constructor stub
+	}
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapsInitializer.initialize(getActivity());
     }
 
     @Override
@@ -60,7 +56,11 @@ public class ShopMapFragment extends BaseFragment {
             Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.map_layout, null);
-        map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        mMapView = (MapView) v.findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.onResume();
+
+        map = mMapView.getMap();
 
         mDialog = new ProgressDialog(_context);
         mDialog.setMessage("Downloading data ...");
@@ -113,18 +113,6 @@ public class ShopMapFragment extends BaseFragment {
         });
         return v;
     }
-
-    @Override
-    public void onDestroyView() {
-    	// TODO Auto-generated method stub
-    	super.onDestroyView();
-    	
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        Fragment fragment = (fm.findFragmentById(R.id.map));
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.remove(fragment);
-        ft.commit();
-    }
     
     public void addMarkers()
     {
@@ -134,10 +122,10 @@ public class ShopMapFragment extends BaseFragment {
 	        if(gps.canGetLocation()){
 	            double lat = gps.getLatitude();
 	            double lng = gps.getLongitude();
-	            ShopMapFragment.this.map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))).setTitle("Me");
-	
-	            ShopMapFragment.this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
-	            ShopMapFragment.this.map.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
+	            map.addMarker(new MarkerOptions().position(new LatLng(lat, lng))).setTitle("Me");
+
+	            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+	            map.animateCamera(CameraUpdateFactory.zoomTo(14), 1000, null);
 	        } else {
 	            gps.showSettingsAlert();
 	        }

@@ -49,7 +49,7 @@ public class MainScreenActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tab_layout);
+        setContentView(R.layout.main_screen_layout);
 
         viewpager = (ViewPager) findViewById(R.id.pager);
 
