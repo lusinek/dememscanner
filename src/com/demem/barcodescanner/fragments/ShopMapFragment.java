@@ -75,7 +75,7 @@ public class ShopMapFragment extends BaseFragment {
                     @Override
                     public void run() {
                         if(mDialog.isShowing()) {
-                            mDialog.hide();
+                            mDialog.dismiss();
                         }
                     }
                 });

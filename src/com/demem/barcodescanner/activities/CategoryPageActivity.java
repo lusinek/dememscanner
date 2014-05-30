@@ -10,6 +10,8 @@ import com.demem.barcodescanner.jsonparser.JsonItemListParser;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +31,8 @@ public class CategoryPageActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         categoryName = bundle.getString(CategoryListFragment.CATEGORY_NAME_FLAG);
         setTitle(categoryName);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = (ListView)findViewById(R.id.itemsListView);
 
@@ -50,5 +54,16 @@ public class CategoryPageActivity extends BaseActivity {
 				getApplicationContext().startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        // Respond to the action bar's Up/Home button
+        case android.R.id.home:
+            this.finish();
+            return true;
+     }
+        return super.onOptionsItemSelected(item);
     }
 }

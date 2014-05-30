@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,6 +46,8 @@ public class SearchActivity extends Activity {
 
         textView = (TextView) findViewById(R.id.inputSearch);
         listView = (ListView) findViewById(R.id.itemsListView);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(tabIndex == 0) {
             final ListItemAdapter adapter = new ListItemAdapter(this, jsonItemListParser.getAllItems());
@@ -108,5 +111,16 @@ public class SearchActivity extends Activity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        // Respond to the action bar's Up/Home button
+        case android.R.id.home:
+            this.finish();
+            return true;
+     }
+        return super.onOptionsItemSelected(item);
     }
 }

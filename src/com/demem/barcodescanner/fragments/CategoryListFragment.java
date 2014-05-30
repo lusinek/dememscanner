@@ -67,7 +67,7 @@ public class CategoryListFragment extends BaseFragment {
                     public void run() {
                     	CategoryListFragment.this.listView.setAdapter(CategoryListFragment.this.adapter);
                         if(mDialog.isShowing()) {
-                            mDialog.hide();
+                            mDialog.dismiss();
                         }
                     }
                 });
