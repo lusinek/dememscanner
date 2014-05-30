@@ -44,11 +44,9 @@ public class NewsFeedFragment extends BaseFragment{
 		final Activity activity = getActivity();
 		
 		mDialog = new ProgressDialog(_context);
-		if(this.isVisible()) {
-	        mDialog.setMessage("Downloading data ...");
-	        mDialog.setCancelable(false);
-	        mDialog.show();
-		}
+		mDialog.setMessage("Downloading data ...");
+		mDialog.setCancelable(false);
+		mDialog.show();
 	
 		mExpandableListView = (ExpandableListView) v.findViewById(R.id.newsListView);
         
@@ -75,8 +73,8 @@ public class NewsFeedFragment extends BaseFragment{
                     public void run() {
                     	mExpandableListView.setAdapter(mExpandableAdapter);
                         if(mDialog.isShowing()) {
-                            mDialog.hide();
-                        }
+                            mDialog.dismiss();
+                       }
                     }
                 });
             }
