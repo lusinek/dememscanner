@@ -5,7 +5,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +25,12 @@ import com.demem.barcodescanner.SoundPlayer;
 import com.demem.barcodescanner.base.BaseFragment;
 import com.demem.barcodescanner.jsonparser.JsonItemListParser;
 import com.demem.barcodescanner.jsonparser.JsonNewsParser;
+import com.demem.barcodescanner.utils.NewsContainer;
 
 public class NewsFeedFragment extends BaseFragment{
 	 
+	private static String TAG = "com.demem.barcodescanner.fragments.NewsFeedFragment";
+
 	protected JsonNewsParser jsonNewsParser = JsonNewsParser.getInstance();
 	protected SoundPlayer soundPlayer = SoundPlayer.getInstance();
 
@@ -59,10 +65,17 @@ public class NewsFeedFragment extends BaseFragment{
             	ArrayList<String> listOfTitles = jsonNewsParser.getNews();
             	for(int i = 0; i < listOfTitles.size(); ++i)
             	{
+                    String imagePath = "";
             		String title = listOfTitles.get(i);
             		Group group = new Group(title);
-            		// Get news detail corresponding to the title
-            		group.children.add(jsonNewsParser.getNewsContent(title));
+            		// Get news detail corresponding to the title and image path if present
+            		try {
+            			imagePath = jsonNewsParser.getNewsImageUrl(title);
+            		}
+            		catch (Exception e) {
+            			Log.e(TAG, title + " does not have image.");
+            		}
+            		group.children.add(new NewsContainer(jsonNewsParser.getNewsContent(title), imagePath));
             		groups.append(i, group);
             	}
             	
@@ -105,7 +118,7 @@ public class NewsFeedFragment extends BaseFragment{
     
 	public class Group {
 		public String string;
-		public final List<String> children = new ArrayList<String>();
+		public final List<NewsContainer> children = new ArrayList<NewsContainer>();
 
 		public Group(String string) {
 			this.string = string;
@@ -137,17 +150,25 @@ public class NewsFeedFragment extends BaseFragment{
 		  @Override
 		  public View getChildView(int groupPosition, final int childPosition,
 		      boolean isLastChild, View convertView, ViewGroup parent) {
-		    final String children = (String) getChild(groupPosition, childPosition);
+		    final NewsContainer child = (NewsContainer) getChild(groupPosition, childPosition);
 		    TextView text = null;
 		    if (convertView == null) {
-		      convertView = inflater.inflate(R.layout.listrow_details, null);
+		      convertView = inflater.inflate(R.layout.news_feed_item_details, null);
 		    }
-		    text = (TextView) convertView.findViewById(R.id.textView1);
-		    text.setText(children);
+		    text = (TextView) convertView.findViewById(R.id.newsFeedChildContent);
+		    text.setText(child.getNewsContent());
+		    
+		    String newsImageUrl = child.getImagePath();
+		    if(newsImageUrl != "") {
+		    	ImageView imageView = (ImageView) convertView.findViewById(R.id.newsFeedChildImage);
+		    	Drawable d = Drawable.createFromPath(newsImageUrl);
+		    	imageView.setImageDrawable(d);
+		    }
+		    
 		    convertView.setOnClickListener(new OnClickListener() {
 		      @Override
 		      public void onClick(View v) {
-		        Toast.makeText(activity, children,
+		        Toast.makeText(activity, child.getNewsContent(),
 		            Toast.LENGTH_SHORT).show();
 		      }
 		    });
@@ -188,7 +209,7 @@ public class NewsFeedFragment extends BaseFragment{
 		  public View getGroupView(int groupPosition, boolean isExpanded,
 		      View convertView, ViewGroup parent) {
 		    if (convertView == null) {
-		      convertView = inflater.inflate(R.layout.listrow_group, null);
+		      convertView = inflater.inflate(R.layout.news_feed_item_group, null);
 		    }
 		    Group group = (Group) getGroup(groupPosition);
 		    ((CheckedTextView) convertView).setText(group.string);
